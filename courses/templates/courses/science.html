@@ -1,0 +1,159 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embedded YouTube Video</title>
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="{% static 'css/science.css' %}">
+</head>
+<body>
+    <div class="dropdown">
+        <span>☰ Menu</span>
+        <div class="dropdown-content">
+            <a href="{% url 'accounts:student_dashboard' %}">🖼 Avatar</a>
+            <a href="{% url 'courses:get_started' %}">📚 My Courses</a>
+            <a href="{% url 'accounts:student_dashboard' %}">🔔 Notifications</a>
+            <a href="{% url 'quiz:quiz_selection' %}">📝 Take Quiz</a>
+
+        </div>
+    </div>
+    <!-- Magnetic Flux Section -->
+    <section class="home-header">
+        <h1>Magnetic Flux</h1>
+    </section>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/6Q8wPfeOqnk"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/m1PPujngqAw"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <!-- Lenz's Law Section -->
+    <section class="home-header">
+        <h1>Lenz's Law</h1>
+    </section>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/xxZenoBs2Pg"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <div class="video-container">
+        <iframe src="http://youtube.com/embed/Tzl2BJeJ45Q"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <!-- Kirchhoff's Law Section -->
+    <section class="home-header">
+        <h1>Kirchhoff's Law</h1>
+    </section>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/OYerdzZPSI0"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/Bt6V7D5av9A"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <!-- Periodic Table Section -->
+    <section class="home-header">
+        <h1>Periodic Table</h1>
+    </section>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/rz4Dd1I_fX0"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <div class="video-container">
+        <iframe src="http://youtube.com/embed/okolv1y6IlE"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <!-- Atomic Structure Section -->
+    <section class="home-header">
+        <h1>Atomic Structure</h1>
+    </section>
+
+    <div class="video-container">
+        <iframe src="http://youtube.com/embed/W2Xb2GFK2yc"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <div class="video-container">
+        <iframe src="http://youtube.com/embed/sziNY_YN730"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <!-- Hydrocarbons Section -->
+    <section class="home-header">
+        <h1>Hydrocarbons</h1>
+    </section>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/1UE3hZ7cOP0"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/qso-kuXVNsY"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+    
+    <!-- Back to Home Button at the bottom center -->
+    <div class="bottom-button-container">
+        <a href="{% url 'courses:get_started' %}" class="back-button">Back to Home</a>
+    </div>
+
+    <!-- Link to external JavaScript file -->
+    <script src="{% static 'js/science.js' %}"></script>
+
+</body>
+</html>
+
+

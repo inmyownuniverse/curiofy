@@ -1,0 +1,158 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technology</title>
+    <!-- Link to External CSS File -->
+    <link rel="stylesheet" href="{% static 'css/technology.css' %}">
+</head>
+<body>
+    <div class="dropdown">
+        <span>☰ Menu</span>
+        <div class="dropdown-content">
+            <a href="{% url 'accounts:student_dashboard' %}">🖼 Avatar</a>
+            <a href="{% url 'courses:get_started' %}">📚 My Courses</a>
+            <a href="{% url 'accounts:student_dashboard' %}">🔔 Notifications</a>
+            <a href="{% url 'quiz:quiz_selection' %}">📝 Take Quiz</a>
+        </div>
+    </div>
+    <!-- C Programming Section -->
+    <section class="home-header">
+        <h1>C Programming</h1>
+    </section>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/irqbmMNs2Bo"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/i0ovgS-jCQ8"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <!-- Java Section -->
+    <section class="home-header">
+        <h1>Java</h1>
+    </section>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/eIrMbAQSU34"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/UmnCZ7-9yDY"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <!-- Python Section -->
+    <section class="home-header">
+        <h1>Python</h1>
+    </section>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/UrsmFxEIp5k"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/vLqTf2b6GZw"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+    
+    <!-- HTML & CSS Section -->
+    <section class="home-header">
+        <h1>HTML & CSS</h1>
+    </section>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/HcOc7P5BMi4"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/HBqWsrqK89U"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+    
+    <!-- Django Section -->
+    <section class="home-header">
+        <h1>Django</h1>
+    </section>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/rHux0gMZ3Eg"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/JxzZxdht-XY"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div> 
+
+    <!-- SQL Section -->
+    <section class="home-header">
+        <h1>SQL</h1>
+    </section>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/hlGoQC332VM"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/OT1RErkfLNQ"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <!-- Back to Home Button at the bottom center -->
+    <div class="bottom-button-container">
+        <a href="{% url 'courses:get_started' %}" class="back-button">Back to Home</a>
+    </div>
+
+    <!-- Link to External JS File -->
+    <script src="technology.js"></script>
+</body>
+</html>
+
+
+

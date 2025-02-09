@@ -1,0 +1,252 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curiofy | Home</title>
+    <style>
+        /* Home Page Styles */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, sans-serif; }
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            background-image: url("{% static 'images/curiofy_bg.png' %}"); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+        }
+
+        /* Adding a blurred overlay */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("{% static 'images/curiofy_bg.png' %}"); 
+            background-size: cover;
+            background-position: center;
+            filter: blur(10px); /* Apply blur */
+            z-index: -1; /* Make sure it stays behind the content */
+        }
+
+        .home-header {
+            background-color: rgba(0, 0, 0, 0.6); /* Dark overlay to make text readable */
+            color: #fff;
+            text-align: center;
+            padding: 5rem 2rem;
+        }
+
+        .home-header h1 { font-size: 3rem; margin-bottom: 1rem; }
+        .home-header p { font-size: 1.2rem; max-width: 900px; margin: 0 auto; color: #ddd; margin-bottom: 2rem; }
+
+        .explore-button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+            color: #b56006;
+            background-color: #050607;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background 0.3s ease;
+            margin-top: 2rem;
+            text-align: center;
+            margin: 3rem auto;
+            display: block;
+        }
+
+        .explore-button:hover { background-color: #212529; }
+
+        .features-section {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .features-section h2 { font-size: 2.5rem; color: #ff6b00; margin-bottom: 2rem; }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover { transform: translateY(-5px); box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); }
+        .feature-icon { font-size: 2.5rem; margin-bottom: 1rem; color: #ff6b00; }
+
+        .footer {
+            background-color: #343a40;
+            color: #fff;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        /* Navigation Bar Styles */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: #000;
+        }
+
+        .logo img {
+            width: 150px;
+            height: auto;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .sign-in {
+            background: transparent;
+            border: 2px solid #fff;
+            color: #fff;
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 1rem;
+            text-decoration: none;
+        }
+        /* Language Switcher Styles */
+        .language-switcher {
+            display: flex;
+            gap: 8px;
+            margin-left: 20px;
+            align-items: center;
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: 1px solid #fff;
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn:hover {
+            background-color: #FFB84C;
+            border-color: #FFB84C;
+            color: black;
+        }
+
+        .lang-btn.active {
+            background-color: #FFB84C;
+            border-color: #FFB84C;
+            color: black;
+        }
+    </style>
+    
+
+</head>
+<body>
+    <!-- Add Navigation Bar -->
+    <header>
+        <a href="{% url 'home:index' %}" class="logo">
+            <img src="{% static 'images/Curiofy__logo1.png' %}" alt="Curiofy Logo">
+        </a>
+        
+
+        <div class="nav-links">
+            <a href="{% url 'home:home' %}" data-translate="true">Home</a>
+            <a href="{% url 'home:about' %}" data-translate="true">About Us</a>
+            <a href="{% url 'home:explore' %}" data-translate="true">Explore</a>
+            <a href="{% url 'home:community' %}" data-translate="true">Community</a>
+            <a href="#" onclick="checkLogin()" >Students</a>
+            
+        
+
+        </div>
+        <a href="{% url 'accounts:login' %}" class="sign-in">Sign In</a>
+    </header>
+
+
+    <!-- Home Header -->
+    <section class="home-header">
+        <h1 data-translate="true">Welcome to Curiofy!</h1>
+        <p data-translate="true">Explore a world of knowledge in Science, Technology, Engineering, and Mathematics. Start your learning adventure today.</p>
+    </section>
+
+
+    <!-- Featured Topics -->
+    <section class="features-section">
+        <h2 data-translate="true">Featured Topics</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🔬</div>
+
+                <h3 data-translate="true">Science</h3>
+                <p data-translate="true">Discover the wonders of the natural world from physics to biology.</p>
+            </div>
+            <div class="feature-card">
+
+                <div class="feature-icon">💻</div>
+                <h3 data-translate="true">Technology</h3>
+                <p data-translate="true">Stay ahead in the world of tech with AI, coding, and more.</p>
+            </div>
+            <div class="feature-card">
+
+                <div class="feature-icon">🏗️</div>
+                <h3 data-translate="true">Engineering</h3>
+                <p data-translate="true">Learn about cutting-edge engineering fields like robotics and design.</p>
+            </div>
+            <div class="feature-card">
+
+                <div class="feature-icon">📊</div>
+                <h3 data-translate="true">Mathematics</h3>
+                <p data-translate="true">Master mathematical concepts that form the foundation of STEM.</p>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Start Exploring Button -->
+    <a href="{% url 'home:explore' %}" class="explore-button" data-translate="true">Start Exploring</a>
+
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p data-translate="true">Curiofy | 2025. All Rights Reserved.</p>
+    </footer>
+    
+    <script>
+        function checkLogin() {
+            const isLoggedIn = localStorage.getItem("isLoggedIn");
+            if (isLoggedIn === "true") {
+                window.location.href = "students.html";
+            } else {
+                window.location.href = "signin.html";
+            }
+        }
+    </script>
+</body>
+</html>

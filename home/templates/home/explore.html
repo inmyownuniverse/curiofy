@@ -1,0 +1,386 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore | Curiofy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #4a90e2, #7AA2E8);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Navigation Bar Styles - Updated */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: #000;
+            width: 100%;
+        }
+
+        .logo img {
+            width: 150px;
+            height: auto;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #ff6b00;
+        }
+
+        .sign-in {
+            background: transparent;
+            border: 2px solid #fff;
+            color: #fff;
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .sign-in:hover {
+            background-color: #fff;
+            color: #000;
+        }
+
+        /* Content wrapper to handle padding */
+        .content-wrapper {
+            padding: 0 2rem;
+            flex: 1;
+        }
+
+        /* Header Section */
+        .explore-header {
+            background-color: #000;
+            color: #fff;
+            padding: 4rem 2rem;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+            margin-top: 3rem;
+        }
+
+        .explore-header h1 {
+            font-size: 3rem;
+            color: #ff6b00;
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+        }
+
+        .explore-header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            color: #ddd;
+            line-height: 1.6;
+        }
+
+        /* Explore Section */
+        .explore-container {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .explore-card {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            flex-basis: calc(33% - 2rem);
+            text-transform: uppercase;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .explore-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .explore-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #ff6b00;
+        }
+
+        .explore-card h3 {
+            font-size: 1.7rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .explore-card p {
+            font-size: 1rem;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 80vh;
+            padding: 5rem 2rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff;
+            margin-top: 3rem;
+            border-radius: 10px;
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero p {
+            font-size: 2.5rem;
+            color: #7AA2E8;
+            max-width: 1000px;
+            margin: 0 auto 2rem auto;
+            line-height: 1.4;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #ff6b00;
+            color: white;
+            padding: 1.2rem 2.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-top: 2rem;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background: #e65c00;
+            transform: translateY(-5px);
+        }
+
+        /* Back to Home Button */
+        .back-home {
+            display: inline-block;
+            padding: 12px 25px;
+            font-size: 1.2rem;
+            color: #fff;
+            background-color: #ff6b00;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background 0.3s ease, transform 0.3s ease;
+            margin: 3rem auto;
+        }
+
+        .back-home:hover {
+            background-color: #e65c00;
+            transform: translateY(-5px);
+        }
+
+        /* Flexbox to center the back-home button */
+        .bottom-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            margin-top: auto;
+            padding-bottom: 3rem;
+            width: 100%;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .explore-header h1 {
+                font-size: 2.2rem;
+            }
+
+            .explore-header p {
+                font-size: 1rem;
+            }
+
+            .explore-card {
+                flex-basis: calc(50% - 2rem); /* 2 cards per row */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .explore-card {
+                flex-basis: 100%; /* 1 card per row */
+            }
+
+            .hero p {
+                font-size: 2rem;
+            }
+
+            .cta-button {
+                font-size: 1.1rem;
+                padding: 1rem 2rem;
+            }
+        }
+
+        /* Language Switcher Styles */
+        .language-switcher {
+            display: flex;
+            gap: 8px;
+            margin-left: 20px;
+            align-items: center;
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: 1px solid #fff;
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn:hover {
+            background-color: #FFB84C;
+            border-color: #FFB84C;
+            color: black;
+        }
+
+        .lang-btn.active {
+            background-color: #FFB84C;
+            border-color: #FFB84C;
+            color: black;
+        }        
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <header>
+        <a href="{% url 'home:index' %}" class="logo">
+            <img src="{% static 'images/Curiofy__logo1.png' %}" alt="Curiofy Logo">
+        </a>
+        
+
+        <div class="nav-links">
+            <a href="{% url 'home:home' %}" data-translate="true">Home</a>
+            <a href="{% url 'home:about' %}" data-translate="true">About Us</a>
+            <a href="{% url 'home:explore' %}" data-translate="true">Explore</a>
+            <a href="{% url 'home:community' %}" data-translate="true">Community</a>
+
+            <a href="{% url 'accounts:signup' %}"data-translate="true">Students</a>
+                      
+                        
+        </div>
+        <a href="{% url 'accounts:login' %}" class="sign-in" data-translate="true">Sign In / Sign Up</a>
+    </header>
+
+    <!-- Wrap the rest of the content -->
+    <div class="content-wrapper">
+        <!-- Explore Header -->
+        <section class="explore-header">
+            <h1 data-translate="true">Explore STEM with Curiofy</h1>
+            <p data-translate="true">Discover a wide range of topics in Science, Technology, Engineering, and Mathematics. Click on any topic to start your learning journey!</p>
+        </section>
+
+
+        <!-- Explore Section -->
+        <div class="explore-container">
+            <div class="explore-card">
+                <div class="explore-icon">🔬</div>
+                <h3 data-translate="true">Science</h3>
+                <p data-translate="true">Explore the wonders of physics, chemistry, biology, and space science.</p>
+            </div>
+            <div class="explore-card">
+
+                <div class="explore-icon">💻</div>
+                <h3 data-translate="true">Technology</h3>
+                <p data-translate="true">Dive into AI, programming, cybersecurity, and the latest tech trends.</p>
+            </div>
+            <div class="explore-card">
+
+                <div class="explore-icon">🏗️</div>
+                <h3 data-translate="true">Engineering</h3>
+                <p data-translate="true">Learn about robotics, electronics, mechanical design, and innovation.</p>
+            </div>
+            <div class="explore-card">
+
+                <div class="explore-icon">📊</div>
+                <h3 data-translate="true">Mathematics</h3>
+                <p data-translate="true">Enhance your problem-solving skills with algebra, geometry, and calculus.</p>
+            </div>
+            <div class="explore-card">
+
+                <div class="explore-icon">🚀</div>
+                <h3 data-translate="true">Space Exploration</h3>
+                <p data-translate="true">Uncover the mysteries of the universe and the latest space missions.</p>
+            </div>
+            <div class="explore-card">
+
+                <div class="explore-icon">🧬</div>
+                <h3 data-translate="true">Biotechnology</h3>
+                <p data-translate="true">Discover genetics, DNA research, and medical advancements.</p>
+            </div>
+        </div>
+
+
+        <!-- Hero Section with centered button -->
+        <section class="hero">
+            <p data-translate="true">Ready to begin your journey in STEM? Let's get started!</p>
+            <a href="{% url 'courses:get_started' %}" class="cta-button" data-translate="true">Start Learning</a>
+        </section>
+
+
+        <!-- Back to Home Button (Center and at the bottom) -->
+        <div class="bottom-container">
+            <a href="{% url 'home:home' %}" class="back-home" data-translate="true">Back to Home</a>
+        </div>
+    </div>
+    
+    <script>
+        function checkLogin() {
+            const isLoggedIn = localStorage.getItem("isLoggedIn");
+            if (isLoggedIn === "true") {
+                window.location.href = "students.html";
+            } else {
+                window.location.href = "signin.html";
+            }
+        }
+    </script>
+</body>
+</html>

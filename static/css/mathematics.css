@@ -1,0 +1,111 @@
+
+/* styles.css */
+
+body { 
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column; /* Stack sections vertically */
+    justify-content: flex-start; /* Align items at the top */
+    align-items: center;
+    height: 100%;
+    background-color: #f0f0f0;
+}
+
+.video-container {
+    width: 500px;  /* Set a fixed width for the rectangle */
+    height: 300px; /* Set a fixed height for the rectangle */
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px; /* Space between video containers */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+iframe {
+    width: 100%;    /* Full width of the video container */
+    height: 100%;   /* Full height of the video container */
+    border-radius: 10px;
+}
+
+.home-header {
+    position: relative; /* Keep header inside normal document flow */
+    color: #e8630a;
+    text-align: center;
+    padding: 2rem 2rem;
+    width: 50%;
+    box-sizing: border-box;
+    font-size: 2rem; /* Adjust font size here */
+    margin-bottom: 20px; /* Add space between header and video */
+}
+
+/* Back to Home Button */
+.back-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #e8630a;
+    background-color: #343a40;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background 0.3s ease;
+    margin-top: 3rem;
+    align-self: center; /* Center the button horizontally */
+}
+
+.back-button:hover { background-color: #212529; }
+
+/* Ensure the back-button is at the bottom */
+.bottom-button-container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: flex-end; /* Align to the bottom */
+    flex-grow: 1; /* Make sure the content above takes the available space */
+    padding-bottom: 2rem; /* Add some space at the bottom */
+}
+/* Avatar & Course Dropdown */
+.dropdown {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 40px;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    min-width: 160px;
+    z-index: 1;
+    border-radius: 5px;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    border-bottom: 1px solid #ddd;
+}
+
+.dropdown-content a:hover {
+    background-color: #575757;
+}

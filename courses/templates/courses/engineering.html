@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engineering</title>
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="{% static 'css/engineering.css' %}">
+</head>
+<body>
+    <div class="dropdown">
+        <span>☰ Menu</span>
+        <div class="dropdown-content">
+            <a href="{% url 'accounts:student_dashboard' %}">🖼 Avatar</a>
+            <a href="{% url 'courses:get_started' %}">📚 My Courses</a>
+            <a href="{% url 'accounts:student_dashboard' %}">🔔 Notifications</a>
+            <a href="{% url 'quiz:quiz_selection' %}">📝 Take Quiz</a>
+        </div>
+    </div>
+    <!-- Data Structures Section -->
+    <section class="home-header">
+        <h1>Data Structures</h1>
+    </section>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/KwBuV7YZido"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/J0OvDNmAWNw"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <!-- Operating Systems  Section -->
+    <section class="home-header">
+        <h1>Operating Systems</h1>
+    </section>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/3obEP8eLsCw"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/8XBtAjKwCm4"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <!-- Basic Electrical Engineering Section -->
+    <section class="home-header">
+        <h1>Basic Electrical Engineering</h1>
+    </section>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/h3osT6TM3uk"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/K_w5G4STHZI"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+     <!-- ENGINEERING MECHANICS Section -->
+     <section class="home-header">
+        <h1>Engineering Mechanics</h1>
+    </section>
+
+    <div class="video-container">
+        <iframe src="http://youtube.com/embed/YIkKnRUEfaY"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/GQKJ6ugELCs"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <!-- Engineering Graphics Section -->
+    <section class="home-header">
+        <h1>Engineering Graphics</h1>
+    </section>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/C6A-zqYdb20"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div> 
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/paDG7SvpdCQ"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+    
+    <!-- Back to Home Button at the bottom center -->
+    <div class="bottom-button-container">
+        <a href="{% url 'courses:get_started' %}" class="back-button">Back to Home</a>
+    </div>
+
+    <!-- Link to external JS file -->
+    <script src="scripts.js"></script>
+</body>
+</html>
+

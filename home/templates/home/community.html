@@ -1,0 +1,254 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community | Curiofy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #4a90e2, #7AA2E8);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Navigation Bar Styles */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: #000;
+            width: 100%;
+        }
+
+        .logo img {
+            width: 150px;
+            height: auto;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #ff6b00;
+        }
+
+        .sign-in {
+            background: transparent;
+            border: 2px solid #fff;
+            color: #fff;
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .sign-in:hover {
+            background-color: #fff;
+            color: #000;
+        }
+
+        /* Content Styles */
+        .content-wrapper {
+            padding: 2rem;
+            flex: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .community-section {
+            background-color: #fff;
+            padding: 3rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+        }
+
+        .community-section h1 {
+            color: #ff6b00;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background-color: #f8f9fa;
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #ff6b00;
+        }
+
+        .feature-card h3 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .join-section {
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .join-button {
+            display: inline-block;
+            background-color: #ff6b00;
+            color: #fff;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+
+        .join-button:hover {
+            background-color: #e65c00;
+        }
+
+        /* Language Switcher Styles */
+        .language-switcher {
+            display: flex;
+            gap: 8px;
+            margin-left: 20px;
+            align-items: center;
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: 1px solid #fff;
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn:hover {
+            background-color: #FFB84C;
+            border-color: #FFB84C;
+            color: black;
+        }
+
+        .lang-btn.active {
+            background-color: #FFB84C;
+            border-color: #FFB84C;
+            color: black;
+        }        
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <header>
+        <a href="{% url 'home:index' %}" class="logo">
+            <img src="{% static 'images/Curiofy__logo1.png' %}" alt="Curiofy Logo">
+        </a>
+        
+
+        <div class="nav-links">
+            <a href="{% url 'home:home' %}" data-translate="true">Home</a>
+            <a href="{% url 'home:about' %}" data-translate="true">About Us</a>
+            <a href="{% url 'home:explore' %}" data-translate="true">Explore</a>
+            <a href="{% url 'home:community' %}" data-translate="true">Community</a>
+           <!-- <a href="{% url 'accounts:signup' %}" data-translate="true">Students</a>-->
+            
+
+        </div>
+        <a href="{% url 'accounts:login' %}" class="sign-in" data-translate="true">Sign In / Sign Up</a>
+    </header>
+
+
+    <div class="content-wrapper">
+        <section class="community-section">
+            <h1 data-translate="true">Join Our Community</h1>
+            <p data-translate="true">Connect with fellow learners, share your knowledge, and grow together in our vibrant STEM community.</p>
+            
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">👥</div>
+                    <h3 data-translate="true">Study Groups</h3>
+                    <p data-translate="true">Join or create study groups to collaborate with peers and enhance your learning experience.</p>
+                </div>
+                <div class="feature-card">
+
+                    <div class="feature-icon">💬</div>
+                    <h3 data-translate="true">Discussion Forums</h3>
+                    <p data-translate="true">Engage in meaningful discussions about various STEM topics with students and experts.</p>
+                </div>
+                <div class="feature-card">
+
+                    <div class="feature-icon">🏆</div>
+                    <h3 data-translate="true">Challenges</h3>
+                    <p data-translate="true">Participate in weekly challenges and competitions to test your knowledge and win prizes.</p>
+                </div>
+            </div>
+
+
+            <div class="join-section">
+                <a href="{% url 'accounts:signup' %}" class="join-button" data-translate="true">Join Our Community</a>
+            </div>
+        </section>
+    </div>
+
+    
+    <script>
+        function checkLogin() {
+            const isLoggedIn = localStorage.getItem("isLoggedIn");
+            if (isLoggedIn === "true") {
+                window.location.href = "students.html";
+            } else {
+                window.location.href = "{% url 'accounts:login' %}";
+            }
+        }
+    </script>
+</body>
+</html>

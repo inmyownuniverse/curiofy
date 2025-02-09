@@ -1,0 +1,332 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In | Curiofy</title>
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: system-ui, sans-serif; 
+        }
+
+        body { 
+            background: url("{% static 'images/curiofy_bg.png' %}") no-repeat center center fixed; 
+            background-size: cover;
+            color: white;
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            position: relative;
+            text-align: center;
+            transition: 0.5s ease-in-out;
+        }
+
+        /* Overlay for readability */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #56565645; 
+            z-index: 1;
+        }
+
+        /* Glassmorphism Sign In Box */
+        .signin-container {
+            background: rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(15px);
+            padding: 3rem 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .signin-container h2 {
+            color: #fff;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #FFB84C;
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 0 2px rgba(255, 184, 76, 0.2);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .signin-button {
+            width: 100%;
+            padding: 1rem;
+            background-color: #FFB84C;
+            color: black;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .signin-button:hover {
+            background-color: #ffa726;
+            transform: translateY(-1px);
+        }
+
+        .signup-link {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .signup-link p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        .signup-link a {
+            color: #FFB84C;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .signup-link a:hover {
+            color: #ffa726;
+            text-decoration: underline;
+        }
+
+        .back-to-home {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            z-index: 3;
+        }
+
+        .back-to-home:hover {
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .error-message {
+            background: rgba(255, 68, 68, 0.1);
+            color: #ff4444;
+            padding: 0.8rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255, 68, 68, 0.2);
+            display: block;
+        }
+
+        /* Dark Mode */
+        .dark-mode {
+            background: url("{% static 'images/curiofy_bg.png' %}") no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+        }
+
+        .dark-mode .overlay {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .dark-mode .signin-container {
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .dark-mode .input-field {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        /* Toggle Button */
+        .toggle-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 3;
+        }
+
+        .toggle-btn {
+            background: white;
+            color: black;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .toggle-btn:hover {
+            background: #ddd;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay"></div>
+
+    <!-- Dark Mode Toggle -->
+    <div class="toggle-container">
+        <button class="toggle-btn" onclick="toggleDarkMode()">🌙 Dark Mode</button>
+    </div>
+
+    <!-- Sign In Form -->
+    <div class="signin-container">
+        <h2>Sign In</h2>
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="error-message">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        
+        <form method="POST" action="{% url 'accounts:login' %}" id="loginForm">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">Username or Email</label>
+                <input 
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    placeholder="Enter your username or email"
+                    required
+                >
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    placeholder="Enter your password"
+                    required
+                >
+            </div>
+            
+            <button type="submit" class="signin-button">Sign In</button>
+        </form>
+        
+        <div class="signup-link">
+            <p>Don't have an account? <a href="{% url 'accounts:signup' %}">Sign Up</a></p>
+        </div>
+    </div>
+    
+    <a href="{% url 'home:home' %}" class="back-to-home">← Back to Home</a>
+
+
+    <script>
+        // Languages Object
+        const languages = {
+            en: {
+                welcomeMessage: "Welcome back! Please enter your credentials to log in.",
+            },
+            hi: {
+                welcomeMessage: "स्वागत है! कृपया लॉग इन करने के लिए अपने प्रमाण पत्र दर्ज करें।",
+            },
+            mr: {
+                welcomeMessage: "वापस स्वागत आहे! कृपया लॉग इन करण्यासाठी आपले प्रमाणपत्र भरा.",
+            }
+        };
+
+        // Dark Mode Toggle
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-mode");
+            let btn = document.querySelector(".toggle-btn");
+            if (document.body.classList.contains("dark-mode")) {
+                btn.innerHTML = "☀️ Light Mode";
+            } else {
+                btn.innerHTML = "🌙 Dark Mode";
+            }
+        }
+
+        // Change Language
+        function changeLanguage(lang) {
+            localStorage.setItem("language", lang);
+            applyLanguage(lang);
+        }
+
+        function applyLanguage(lang) {
+            const language = languages[lang];
+            document.getElementById("welcome-message").innerText = language.welcomeMessage;
+        }
+
+        // Set default language or saved language preference
+        document.addEventListener("DOMContentLoaded", () => {
+            let lang = localStorage.getItem("language") || "en"; // Retrieve from localStorage or default to 'en'
+            applyLanguage(lang);
+        });
+
+        // Form Validation
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent default form submission
+            
+            const formData = new FormData(this);
+            
+            fetch('{% url "accounts:login" %}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            })
+            .then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+
+</body>
+</html>

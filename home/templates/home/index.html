@@ -1,0 +1,175 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curiofy - STEM-tastic Learning at Your Fingertips</title>
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: #fff;
+            background-image: url("{% static 'images/curiofy_bg.png' %}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        /* Navigation Bar */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: #000;
+        }
+
+        .logo img {
+            width: 150px;
+            height: auto;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .sign-in {
+            background: transparent;
+            border: 2px solid #fff;
+            color: #fff;
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 80vh;
+            padding: 4rem 2rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+
+        .hero p {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #0d5de7;
+            max-width: 1000px;
+            margin: 0 auto 2rem auto;
+            line-height: 1.4;
+            
+        }
+
+        /* Language Switcher */
+        .language-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .language-switcher button {
+            background-color: #000;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="{% url 'index' %}" class="logo">
+        <img src="{% static 'images/Curiofy__logo1.png' %}" alt="Curiofy Logo">
+    </a>
+    
+    <div class="nav-links">
+        <a href="{% url 'home:home' %}">Home</a>
+        <a href="{% url 'home:about' %}">About Us</a>
+        <a href="{% url 'home:explore' %}">Explore</a>
+        <a href="{% url 'home:community' %}">Community</a>
+        <a href="{% url 'accounts:signup' %}">Students</a>
+    </div>
+    <a href="{% url 'accounts:login' %}" class="sign-in" aria-label="Sign in">Sign In / Sign Up</a>
+</header>
+
+<!-- Language Switcher -->
+<div class="language-switcher">
+    <button id="en">English</button>
+    <button id="hi">हिन्दी</button>
+    <button id="mr">मराठी</button>
+</div>
+
+<main>
+    <section class="hero">
+        <p id="hero-text"><strong>Unleash your curiosity and explore a world of endless possibilities with Curiofy - where every click sparks discovery!</strong></p>
+    </section>
+</main>
+
+<script>
+    function checkLogin() {
+        const isLoggedIn = localStorage.getItem("isLoggedIn");
+        if (isLoggedIn === "true") {
+            window.location.href = "students.html";
+        } else {
+            window.location.href = "signin.html";
+        }
+    }
+
+    const languages = {
+        en: { heroText: "Unleash your curiosity and explore a world of endless possibilities with Curiofy - where every click sparks discovery!" },
+        hi: { heroText: "अपनी जिज्ञासा को उजागर करें और Curiofy के साथ अंतहीन संभावनाओं की दुनिया का अन्वेषण करें - जहां हर क्लिक खोज को प्रेरित करता है!" },
+        mr: { heroText: "आपली जिज्ञासा अनलॉक करा आणि Curiofy सोबत अंतहीन शक्यतांचा शोध घ्या - जिथे प्रत्येक क्लिक शोधला प्रेरणा देते!" }
+    };
+
+    function changeLanguage(lang) {
+        localStorage.setItem("selectedLanguage", lang);
+        applyLanguage(lang);
+    }
+
+    function applyLanguage(lang) {
+        document.getElementById("hero-text").innerText = languages[lang]?.heroText || languages.en.heroText;
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const savedLang = localStorage.getItem("selectedLanguage") || "en";
+        applyLanguage(savedLang);
+
+        document.getElementById("en").addEventListener("click", () => changeLanguage("en"));
+        document.getElementById("hi").addEventListener("click", () => changeLanguage("hi"));
+        document.getElementById("mr").addEventListener("click", () => changeLanguage("mr"));
+    });
+</script>
+
+</body>
+</html>

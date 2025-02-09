@@ -1,0 +1,182 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Quiz | Curiofy</title>
+    <link rel="stylesheet" href="{% static 'css/quiz.css' %}">
+    <style>
+        .quiz-container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .question-card {
+            background: #f8f9fa;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #007bff;
+        }
+
+        .option-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .option-btn:hover {
+            background: #f8f9fa;
+            border-color: #007bff;
+        }
+
+        .option-btn.selected {
+            background: #007bff;
+            color: white;
+            border-color: #0056b3;
+        }
+
+        .submit-btn {
+            background: #28a745;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: background 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: #218838;
+        }
+
+        .timer {
+            font-size: 24px;
+            color: #dc3545;
+            margin-bottom: 20px;
+        }
+
+        .difficulty {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+
+        .difficulty.easy { background: #28a745; color: white; }
+        .difficulty.medium { background: #ffc107; color: black; }
+        .difficulty.hard { background: #dc3545; color: white; }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h1>Interactive Quiz</h1>
+            <div class="timer" id="timer">Time: <span>00:00</span></div>
+        </div>
+
+        {% if not current_quiz %}
+            <div class="quiz-selection">
+                <h2>Select a Quiz</h2>
+                <form method="POST">
+                    {% csrf_token %}
+                    <select name="quiz_id" onchange="this.form.submit()" class="form-control">
+                        <option value="">Choose a quiz...</option>
+                        {% for quiz in quizzes %}
+                            <option value="{{ quiz.id }}">{{ quiz.title }} - {{ quiz.subject }}</option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
+        {% else %}
+            <div class="quiz-content">
+                <h2>{{ current_quiz.title }}</h2>
+                <form id="quiz-form">
+                    {% for question in questions %}
+                        <div class="question-card">
+                            <h3>
+                                {{ forloop.counter }}. {{ question.question_text }}
+                                <span class="difficulty {{ question.difficulty }}">
+                                    {{ question.difficulty|title }}
+                                </span>
+                            </h3>
+                            <div class="options">
+                                <button type="button" class="option-btn" data-question="{{ question.id }}" data-answer="{{ question.correct_answer }}">
+                                    {{ question.option1 }}
+                                </button>
+                                <button type="button" class="option-btn" data-question="{{ question.id }}" data-answer="{{ question.correct_answer }}">
+                                    {{ question.option2 }}
+                                </button>
+                                <button type="button" class="option-btn" data-question="{{ question.id }}" data-answer="{{ question.correct_answer }}">
+                                    {{ question.option3 }}
+                                </button>
+                                <button type="button" class="option-btn" data-question="{{ question.id }}" data-answer="{{ question.correct_answer }}">
+                                    {{ question.option4 }}
+                                </button>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <button type="submit" class="submit-btn">Submit Quiz</button>
+                </form>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Load the external JavaScript file -->
+    <script src="{% static 'js/quiz.js' %}"></script>
+    <script>
+        // Initialize everything when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click handlers to all option buttons
+            document.querySelectorAll('.option-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove selected class from other options in same question
+                    const questionCard = this.closest('.question-card');
+                    questionCard.querySelectorAll('.option-btn').forEach(btn => {
+                        btn.classList.remove('selected');
+                    });
+                    // Add selected class to clicked button
+                    this.classList.add('selected');
+                });
+            });
+
+            // Start timer if we're in a quiz
+            {% if current_quiz %}
+                startTimer();
+            {% endif %}
+
+            // Initialize quiz form if we're in a quiz
+            {% if current_quiz %}
+                initializeQuizForm(
+                    "{% url 'quiz:submit_quiz' %}",
+                    "{{ current_quiz.id }}",
+                    "{{ csrf_token }}",
+                    "{% url 'quiz:quiz_selection' %}"
+                );
+            {% endif %}
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,534 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curiofy - Student Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, sans-serif;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: url("{% static 'images/curiofy_bg.png' %}"); 
+            background-size: cover;
+            background-position: center center;
+            color: black; /* Changed text color to black */
+            text-align: center;
+            padding: 2rem;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            transition: 0.5s ease-in-out;
+        }
+
+        .dashboard {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .dashboard h1 {
+            grid-column: span 2;
+            font-size: 2rem;
+            margin-bottom: 15px;
+            animation: fadeIn 1s ease-in-out;
+            color: black; /* Ensured the text is black */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease-in-out;
+            animation: fadeIn 1s ease-in-out;
+            flex: 1 1 300px;
+            max-width: 500px;
+        }
+
+        .section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: black; /* Ensured the text is black */
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .score {
+            font-size: 2rem;
+            font-weight: bold;
+            color: black; /* Ensured the text is black */
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .progress-container {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            height: 15px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: #ffea00;
+            border-radius: 10px;
+            transition: width 1s ease-in-out;
+        }
+
+        .leaderboard {
+            list-style: none;
+            padding: 0;
+        }
+
+        .leaderboard li {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 8px;
+            box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+            justify-content: space-between;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .leaderboard img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 15px;
+            text-decoration: none;
+            color: white;
+            background: #ff5722;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #e64a19;
+        }
+
+        .toggle-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .toggle-btn {
+            background: white;
+            color: black;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .toggle-btn:hover {
+            background: #ddd;
+        }
+
+        .dark-mode {
+            background: linear-gradient(to right, #1e1e1e, #333);
+            color: white;
+        }
+
+        .dark-mode .dashboard {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .dark-mode .section {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .notifications, .recent-activities, .achievements {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: left;
+        }
+
+        .notifications li, .recent-activities li, .achievements li {
+            background: rgba(255, 255, 255, 0.2);
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease-in-out;
+        }
+
+        .notifications li:hover, .recent-activities li:hover, .achievements li:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        #user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+        }
+
+        /* Language Switcher Style */
+        .language-switcher {
+            position: fixed;
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .language-switcher select {
+            background: #ff5722;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .language-switcher select:hover {
+            background: #e64a19;
+        }
+
+        /* Avatar & Course Dropdown */
+        .dropdown {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 40px;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            min-width: 160px;
+            z-index: 1;
+            border-radius: 5px;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #575757;
+        }
+
+        /* Keyframe Animation */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .user-menu {
+            position: fixed;
+            top: 20px;
+            right: 120px; /* Positioned to the left of the dark mode toggle */
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+
+        .user-menu span {
+            color: black;
+            font-weight: 500;
+        }
+
+        .logout-btn {
+            background: #de6433;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #c82333;
+        }
+
+        /* Update dark mode styles for user menu */
+        .dark-mode .user-menu span {
+            color: white;
+        }
+
+        .dark-mode .user-menu {
+            background: rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Language Switcher -->
+    <div class="language-switcher">
+        <select id="language-select">
+            <option value="en">English</option>
+            <option value="hi">हिन्दी</option>
+            <option value="mr">मराठी</option>
+        </select>
+    </div>
+    <div class="user-menu">
+        <span>Welcome, {{ user.username }}</span>
+        <a href="{% url 'accounts:logout' %}" class="logout-btn">Logout</a>
+    </div>
+    <!-- Dropdown Menu for Avatar, Courses, and Notifications -->
+    <div class="dropdown">
+        <span>☰ Menu</span>
+        <div class="dropdown-content">
+            <a href="#avatar-section">🖼 Avatar</a>
+            <a href="{% url 'courses:get_started' %}">📚 My Courses</a>
+            <a href="#notifications-section">🔔 Notifications</a>
+            <a href="{% url 'quiz:quiz_selection' %}">📝 Take Quiz</a>
+        </div>
+    </div>
+
+    <!-- Dark Mode Toggle -->
+    <div class="toggle-container">
+        <button class="toggle-btn" onclick="toggleDarkMode()">🌙 Dark Mode</button>
+    </div>
+
+    <!-- Add this near the top of the body, after the language switcher -->
+    
+
+    <div class="dashboard">
+        <h1 id="dashboard-title">🎓 Student Dashboard</h1>
+
+        <!-- Notifications Section -->
+        <div class="section" id="notifications-section">
+            <h2 id="notifications-title">🔔 Notifications</h2>
+            <ul class="notifications">
+                <li id="exam-notice">📅 Your next exam is on 15th February!</li>
+                <li id="message-notice">💬 New message from your teacher: "Review the last chapter!"</li>
+                <li id="assignment-notice">✅ Assignment 3 is now graded!</li>
+            </ul>
+        </div>
+
+        <!-- Recent Activities Section -->
+        <div class="section" id="activities-section">
+            <h2 id="activities-title">📝 Recent Activities</h2>
+            <ul class="recent-activities">
+                <li>📝 Completed "Physics Quiz" - 90%</li>
+                <li>📝 Submitted "Math Assignment" - Grade: A</li>
+                <li>📝 Viewed "Biology Chapter 4"</li>
+            </ul>
+        </div>
+
+        <!-- Score Section -->
+        <div class="section" id="score-section">
+            <h2 id="score-title">Your Score</h2>
+            <p class="score" id="user-score">85 / 100</p>
+
+            <!-- Progress Bar -->
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+        </div>
+
+        <!-- Avatar Change Section -->
+        <div class="section" id="avatar-section">
+            <h2 id="avatar-title">👤 Change Avatar</h2>
+            <input type="file" id="avatar-upload" accept="image/*" onchange="updateAvatar()">
+            <div id="avatar-container">
+                <img src="avatar.avif" id="user-avatar" alt="User Avatar">
+            </div>
+        </div>
+
+        <!-- Leaderboard Section -->
+        <div class="section" id="leaderboard-section">
+            <h2 id="leaderboard-title">🏆 Leaderboard</h2>
+            <ul class="leaderboard">
+                <li><img src="avatar1.png" alt="Alex"> <strong>1. Alex</strong> - 95 pts</li>
+                <li><img src="avatar2.png" alt="Chris"> <strong>2. Chris</strong> - 90 pts</li>
+                <li><img src="avatar3.png" alt="You"> <strong>3. You</strong> - <span id="leaderboard-score">85</span> pts</li>
+                <li><img src="avatar4.png" alt="Sam"> <strong>4. Sam</strong> - 80 pts</li>
+            </ul>
+        </div>
+
+        <!-- Filter Leaderboard Section -->
+        <div class="section" id="filter-leaderboard-section">
+            <h2 id="filter-leaderboard-title">🏆 Filter Leaderboard</h2>
+            <label for="subject" id="subject-label">Select Subject:</label>
+            <select id="subject" onchange="filterLeaderboard()">
+                <option value="all">All Subjects</option>
+                <option value="math">Math</option>
+                <option value="science">Science</option>
+                <option value="history">History</option>
+            </select>
+        </div>
+
+        <!-- Achievements Section -->
+        <div class="section" id="achievements-section">
+            <h2 id="achievements-title">🏅 Achievements</h2>
+            <ul class="achievements">
+                <li>🥇 Completed "Physics 101" Course</li>
+                <li>🎖️ First Place in "Math Challenge"</li>
+                <li>🏆 Highest Score in "History Quiz"</li>
+            </ul>
+        </div>
+
+        
+
+        <a href="{% url 'home:home' %}" class="btn">🏠 Back to Home</a>
+    </div>
+
+    <script>
+        // Dark Mode Toggle Function
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const mode = document.body.classList.contains('dark-mode') ? "Dark" : "Light";
+            document.querySelector(".toggle-btn").innerText = mode + " Mode";
+        }
+
+        // Language Data
+        const languages = {
+            en: {
+                dashboardTitle: "🎓 Student Dashboard",
+                notificationsTitle: "🔔 Notifications",
+                examNotice: "📅 Your next exam is on 15th February!",
+                messageNotice: "💬 New message from your teacher: 'Review the last chapter!'",
+                assignmentNotice: "✅ Assignment 3 is now graded!",
+                activitiesTitle: "📝 Recent Activities",
+                scoreTitle: "Your Score",
+                avatarTitle: "👤 Change Avatar",
+                leaderboardTitle: "🏆 Leaderboard",
+                filterLeaderboardTitle: "🏆 Filter Leaderboard",
+                subjectLabel: "Select Subject:",
+                achievementsTitle: "🏅 Achievements"
+            },
+            hi: {
+                dashboardTitle: "🎓 छात्र डैशबोर्ड",
+                notificationsTitle: "🔔 सूचनाएँ",
+                examNotice: "📅 आपकी अगली परीक्षा 15 फरवरी को है!",
+                messageNotice: "💬 आपके शिक्षक से नया संदेश: 'अंतिम अध्याय की समीक्षा करें!'",
+                assignmentNotice: "✅ असाइनमेंट 3 अब ग्रेडेड है!",
+                activitiesTitle: "📝 हाल की गतिविधियाँ",
+                scoreTitle: "आपका अंक",
+                avatarTitle: "👤 अवतार बदलें",
+                leaderboardTitle: "🏆 नेता बोर्ड",
+                filterLeaderboardTitle: "🏆 फिल्टर नेता बोर्ड",
+                subjectLabel: "विषय चुनें:",
+                achievementsTitle: "🏅 उपलब्धियाँ"
+            },
+            mr: {
+                dashboardTitle: "🎓 विद्यार्थी डॅशबोर्ड",
+                notificationsTitle: "🔔 सूचना",
+                examNotice: "📅 आपला पुढील परीक्षा 15 फेब्रुवारीला आहे!",
+                messageNotice: "💬 आपल्या शिक्षकांकडून नवीन संदेश: 'अंतिम अध्यायाचा पुनरावलोकन करा!'",
+                assignmentNotice: "✅ असाइनमेंट 3 आता ग्रेड केले आहे!",
+                activitiesTitle: "📝 अलीकडील क्रिया",
+                scoreTitle: "आपला स्कोर",
+                avatarTitle: "👤 अवतार बदला",
+                leaderboardTitle: "🏆 लीडरबोर्ड",
+                filterLeaderboardTitle: "🏆 फिल्टर लीडरबोर्ड",
+                subjectLabel: "विषय निवडा:",
+                achievementsTitle: "🏅 उपलब्धता"
+            }
+        };
+
+        // Update Content Based on Selected Language
+        document.getElementById("language-select").addEventListener("change", function () {
+            const lang = this.value;
+            document.getElementById("dashboard-title").innerText = languages[lang].dashboardTitle;
+            document.getElementById("notifications-title").innerText = languages[lang].notificationsTitle;
+            document.getElementById("exam-notice").innerText = languages[lang].examNotice;
+            document.getElementById("message-notice").innerText = languages[lang].messageNotice;
+            document.getElementById("assignment-notice").innerText = languages[lang].assignmentNotice;
+            document.getElementById("activities-title").innerText = languages[lang].activitiesTitle;
+            document.getElementById("score-title").innerText = languages[lang].scoreTitle;
+            document.getElementById("avatar-title").innerText = languages[lang].avatarTitle;
+            document.getElementById("leaderboard-title").innerText = languages[lang].leaderboardTitle;
+            document.getElementById("filter-leaderboard-title").innerText = languages[lang].filterLeaderboardTitle;
+            document.getElementById("subject-label").innerText = languages[lang].subjectLabel;
+            document.getElementById("achievements-title").innerText = languages[lang].achievementsTitle;
+        });
+
+        // Update Avatar
+        function updateAvatar() {
+            const avatarUpload = document.getElementById("avatar-upload");
+            const avatar = document.getElementById("user-avatar");
+            const file = avatarUpload.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    avatar.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Filter Leaderboard
+        function filterLeaderboard() {
+            const subject = document.getElementById("subject").value;
+            const leaderboardItems = document.querySelectorAll(".leaderboard li");
+
+            leaderboardItems.forEach(function (item) {
+                if (subject === "all" || item.innerText.toLowerCase().includes(subject)) {
+                    item.style.display = "flex";
+                } else {
+                    item.style.display = "none";
+                }
+            });
+        }
+    </script>
+</body>
+</html>

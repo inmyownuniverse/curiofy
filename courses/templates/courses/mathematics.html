@@ -1,0 +1,158 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embedded YouTube Video</title>
+    <!-- Link to External CSS -->
+    <link rel="stylesheet" href="{% static 'css/mathematics.css' %}">
+</head>
+<body>
+    <div class="dropdown">
+        <span>☰ Menu</span>
+        <div class="dropdown-content">
+            <a href="{% url 'accounts:student_dashboard' %}">🖼 Avatar</a>
+            <a href="{% url 'courses:get_started' %}">📚 My Courses</a>
+            <a href="{% url 'accounts:student_dashboard' %}">🔔 Notifications</a>
+            <a href="{% url 'quiz:quiz_selection' %}">📝 Take Quiz</a>
+        </div>
+    </div>
+    <!-- PARTIAL DIFFERENTIATION Section -->
+    <section class="home-header">
+        <h1>PARTIAL DIFFERENTIATION</h1>
+    </section>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/VIMZq5x4Wqk"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <div class="video-container">
+        <iframe src="http://youtube.com/embed/2iC47fxnSUs"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <!-- MATRICES Section -->
+    <section class="home-header">
+        <h1>MATRICES</h1>
+    </section>
+
+    <div class="video-container">
+        <iframe src="http://youtube.com/embed/rqkuY4y3m2A"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/ZOWdt8q8DbY"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <!-- LAPLACE TRANSFORM Section -->
+    <section class="home-header">
+        <h1>LAPLACE TRANSFORM</h1>
+    </section>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/NqeUG8FEvCo"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/P7rQBnCeXtI"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <!-- FOURIER SERIES Section -->
+    <section class="home-header">
+        <h1>FOURIER SERIES</h1>
+    </section>
+
+    <div class="video-container">
+        <iframe src="http://youtube.com/embed/kWRLInwDckU"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/80yHCqMU97I"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <!-- NUMERICAL METHOD Section -->
+    <section class="home-header">
+        <h1>NUMERICAL METHOD</h1>
+    </section>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/77UZR8n6I4E"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div> 
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/3_wt_EQG1WY"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <!-- Z TRANSFORMS Section -->
+    <section class="home-header">
+        <h1>Z TRANSFORMS</h1>
+    </section>
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/8_eQxfxCFiE"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div> 
+
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/eiHM5Sje1ec"
+                frameborder="0" 
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+    </div> 
+
+    <!-- Back to Home Button at the bottom center -->
+    <div class="bottom-button-container">
+        <a href="{% url 'courses:get_started' %}" class="back-button">Back to Home</a>
+    </div>
+
+    <!-- Link to External JS -->
+    <script src="scripts.js"></script>
+</body>
+</html>
+
+
+

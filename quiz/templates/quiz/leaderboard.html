@@ -1,0 +1,157 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Leaderboard - Curiofy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, sans-serif;
+        }
+
+        body {
+            background: url("{% static 'images/curiofy_bg.png' %}") no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            padding: 2rem;
+            color: black;
+        }
+
+        .leaderboard-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: #ff6b00;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+
+        select {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            background: white;
+        }
+
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            background: rgba(255, 107, 0, 0.8);
+            color: white;
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .rank {
+            font-weight: bold;
+            color: #ff6b00;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            text-decoration: none;
+            color: #ff6b00;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-button:hover {
+            color: #e65c00;
+        }
+    </style>
+</head>
+<body>
+    <a href="{% url 'quiz:quiz_selection' %}" class="back-button">← Back to Quizzes</a>
+
+    <div class="leaderboard-container">
+        <h1>🏆 Quiz Leaderboard</h1>
+
+        <div class="filters">
+            <select id="quizType" onchange="filterResults()">
+                <option value="all">All Quiz Types</option>
+                <option value="normal">Normal Quiz</option>
+                <option value="voice">Voice Quiz</option>
+            </select>
+
+            <select id="subject" onchange="filterResults()">
+                <option value="all">All Subjects</option>
+                {% for subject in subjects %}
+                    <option value="{{ subject }}">{{ subject }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <table class="leaderboard-table">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>User</th>
+                    <th>Quiz</th>
+                    <th>Type</th>
+                    <th>Score</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                <tr>
+                    <td class="rank">{{ forloop.counter }}</td>
+                    <td>{{ result.user.username }}</td>
+                    <td>{{ result.quiz.title }}</td>
+                    <td>{{ result.quiz_type }}</td>
+                    <td>{{ result.score }}</td>
+                    <td>{{ result.completed_at|date:"M d, Y" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function filterResults() {
+            const quizType = document.getElementById('quizType').value;
+            const subject = document.getElementById('subject').value;
+            
+            // Reload page with filters
+            window.location.href = `?quiz_type=${quizType}&subject=${subject}`;
+        }
+    </script>
+</body>
+</html> 

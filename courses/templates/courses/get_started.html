@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start Learning | Curiofy</title>
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="{% static 'css/get_started.css' %}"> 
+</head>
+<body>
+    
+    <!-- Start Learning Header -->
+    <section class="start-header">
+        <h1>Start Your Learning Journey</h1>
+        <p>Choose a topic below to begin exploring the world of STEM. Whether you're interested in science, technology, engineering, or mathematics, we have resources to get you started!</p>
+    </section>
+
+    
+    <!-- Start Learning Content -->
+    <section class="start-content">
+        <h2>Pick Your First Topic</h2>
+        <div class="start-options">
+
+            <!-- Science Option -->
+            <div class="option-card">
+                <div class="option-icon">🔬</div>
+                <h3>Science</h3>
+                <p>Delve into the amazing world of physics, chemistry, biology, and space. Learn the foundations and latest discoveries!</p>
+                <a href="{% url 'courses:science' %}" class="back-button">Start Learning</a>
+            </div>
+
+            <!-- Technology Option -->
+            <div class="option-card">
+                <div class="option-icon">💻</div>
+                <h3>Technology</h3>
+                <p>Explore the evolving world of technology. From AI to cybersecurity, get hands-on with the tools shaping the future!</p>
+                <a href="{% url 'courses:technology' %}"class="back-button">Start Learning</a>
+            </div>
+
+            <!-- Engineering Option -->
+            <div class="option-card">
+                <div class="option-icon">🏗️</div>
+                <h3>Engineering</h3>
+                <p>Understand the principles behind building things. From robotics to civil engineering, learn to create the world of tomorrow!</p>
+                <a href="{% url 'courses:engineering' %}" class="back-button">Start Learning</a>
+            </div>
+
+            <!-- Mathematics Option -->
+            <div class="option-card">
+                <div class="option-icon">📊</div>
+                <h3>Mathematics</h3>
+                <p>Learn the math that drives the world—from algebra to calculus, unlock the secrets of the universe's numerical patterns!</p>
+                <a href="{% url 'courses:mathematics' %}" class="back-button">Start Learning</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Back to Home Button at the bottom center -->
+    <div class="bottom-button-container">
+        <a href="{% url 'accounts:student_dashboard' %}" class="back-button">Back to Home</a>
+    </div>
+
+    <!-- Link to external JavaScript file -->
+    <script src="{% static 'js/get_startedscript.js' %}"></script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
