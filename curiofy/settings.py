@@ -37,7 +37,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'your-default-secret-key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['*']  # Update this with your domain later
+ALLOWED_HOSTS = ['*']  # Allow all hosts in development
 
 
 # Application definition
@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'home',
     'quiz',
     'courses',
+    
 ]
 
 
@@ -144,27 +145,14 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-#30-01-2025
-# Template settings
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-]
+# Whitenoise configuration
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-]
+# Security settings - disable in development
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# SECURE_SSL_REDIRECT = False  # Railway handles SSL
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
 
 # Session settings
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
@@ -180,13 +168,6 @@ LOGOUT_REDIRECT_URL = 'home:home'
 ADMIN_LOGIN_REDIRECT_URL = 'admin:index'
 ADMIN_LOGOUT_REDIRECT_URL = 'home:home'
 
-# Gemini API settings
-GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
-
-# Whitenoise configuration
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-# Security settings
-SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT', 'False') == 'True'
-SESSION_COOKIE_SECURE = os.getenv('SESSION_COOKIE_SECURE', 'False') == 'True'
-CSRF_COOKIE_SECURE = os.getenv('CSRF_COOKIE_SECURE', 'False') == 'True'
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]

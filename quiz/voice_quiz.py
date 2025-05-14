@@ -1,8 +1,175 @@
-import pyttsx3
 import speech_recognition as sr
+import json
+import random
+import time
+from threading import Thread, Event
+import logging
 from django.db import transaction
 from .models import Quiz, Question, QuizResult
-import time
+import pyttsx3
+
+class VoiceQuiz:
+    def __init__(self):
+        self.recognizer = sr.Recognizer()
+        # List available microphones
+        mics = sr.Microphone.list_microphone_names()
+        print(f"Available microphones: {mics}")
+        
+        # Adjust recognition parameters
+        self.recognizer.dynamic_energy_threshold = True
+        self.recognizer.energy_threshold = 4000
+        self.recognizer.pause_threshold = 0.8
+        self.recognizer.operation_timeout = None
+        
+        self.stop_event = Event()
+        self.current_answer = None
+        self.is_listening = False
+        
+        self.timeout_count = 0
+        self.max_timeouts = 3
+        
+    def start_listening(self):
+        """Start listening for voice input"""
+        try:
+            self.is_listening = True
+            self.stop_event.clear()
+            
+            # Create a new microphone instance for each listening session
+            with sr.Microphone() as source:
+                self.recognizer.adjust_for_ambient_noise(source, duration=1)
+                print("Adjusted for ambient noise")
+            
+            def listen_loop():
+                while not self.stop_event.is_set():
+                    try:
+                        with sr.Microphone() as source:
+                            print("Listening for input...")
+                            audio = self.recognizer.listen(source, timeout=5, phrase_time_limit=5)
+                            self.timeout_count = 0
+                            
+                            try:
+                                text = self.recognizer.recognize_google(audio)
+                                self.current_answer = text.lower()
+                                print(f"Recognized: {text}")
+                                return
+                            except sr.UnknownValueError:
+                                print("Could not understand audio")
+                            except sr.RequestError as e:
+                                print(f"Could not request results; {e}")
+                    except Exception as e:
+                        print(f"Error in listen loop: {e}")
+                        self.timeout_count += 1
+                        if self.timeout_count >= self.max_timeouts:
+                            print("Max timeouts reached, stopping listen loop")
+                            self.stop_event.set()
+                            return
+                        time.sleep(0.1)
+            
+            self.listen_thread = Thread(target=listen_loop)
+            self.listen_thread.daemon = True
+            self.listen_thread.start()
+        except Exception as e:
+            print(f"Error in start_listening: {e}")
+            raise
+    
+    def stop_listening(self):
+        """Stop listening for voice input"""
+        self.stop_event.set()
+        self.is_listening = False
+        self.current_answer = None
+    
+    def check_answer(self, expected_answer):
+        """Check if the current answer matches the expected answer"""
+        if not self.current_answer:
+            return False
+            
+        # Convert both to lowercase and strip whitespace
+        current = self.current_answer.lower().strip()
+        expected = expected_answer.lower().strip()
+        
+        # Check for exact match or close match
+        return current == expected or current in expected or expected in current
+    
+    def get_current_answer(self):
+        """Get the current recognized answer"""
+        return self.current_answer
+    
+    def is_active(self):
+        """Check if voice recognition is active"""
+        return self.is_listening
+
+    def reset(self):
+        """Reset the voice recognition state"""
+        self.stop_event.set()
+        time.sleep(0.5)  # Give time for the previous thread to stop
+        self.stop_event.clear()
+        self.current_answer = None
+        self.is_listening = False
+        self.timeout_count = 0
+
+class QuizManager:
+    def __init__(self):
+        self.voice_quiz = VoiceQuiz()
+        self.current_question = None
+        self.score = 0
+        self.total_questions = 0
+        
+    def start_quiz(self, questions):
+        """Start a new quiz with given questions"""
+        self.questions = questions
+        self.score = 0
+        self.total_questions = len(questions)
+        self.current_question = None
+        
+    def next_question(self):
+        """Get the next question"""
+        if not self.questions:
+            return None
+        self.current_question = self.questions.pop(0)
+        return self.current_question
+        
+    def check_answer(self, answer):
+        """Check if the answer is correct"""
+        if not self.current_question:
+            return False
+            
+        correct_answer = self.current_question['answer'].lower().strip()
+        user_answer = answer.lower().strip()
+        
+        if user_answer == correct_answer:
+            self.score += 1
+            return True
+        return False
+        
+    def get_score(self):
+        """Get current score"""
+        return {
+            'score': self.score,
+            'total': self.total_questions
+        }
+
+# Helper functions for quiz generation
+def generate_quiz_questions(topic, num_questions=5):
+    """Generate quiz questions for a given topic"""
+    # This is a placeholder - you should implement actual question generation
+    sample_questions = [
+        {
+            'question': 'What is Python?',
+            'answer': 'programming language'
+        },
+        {
+            'question': 'What is Django?',
+            'answer': 'web framework'
+        }
+    ]
+    return random.sample(sample_questions, min(num_questions, len(sample_questions)))
+
+def format_question(question_data):
+    """Format a question for display"""
+    return {
+        'question': question_data['question'],
+        'answer': question_data['answer']
+    }
 
 class VoiceQuizSystem:
     def __init__(self, user):
@@ -13,60 +180,38 @@ class VoiceQuizSystem:
         self.score = 0
         self.total_questions = 0
         self.user = user
-        self.mic = sr.Microphone()
+        self.quiz_manager = QuizManager()
+        self.waiting_for_answer = False
         
     def speak(self, text):
         print(f"Speaking: {text}")  # Debug print
         self.engine.say(text)
         self.engine.runAndWait()
-        
-    def listen(self):
-        with self.mic as source:
-            print("Listening...")
-            # Adjust for ambient noise
-            self.recognizer.adjust_for_ambient_noise(source, duration=1)
-            
-            # Add a small pause after speaking and before listening
-            time.sleep(1)
-            
-            try:
-                print("Recording...")
-                audio = self.recognizer.listen(source, timeout=5, phrase_time_limit=5)
-                print("Processing audio...")
-                
-                try:
-                    response = self.recognizer.recognize_google(audio)
-                    print(f"Heard: {response}")  # Debug print
-                    return response.lower()
-                except sr.UnknownValueError:
-                    print("Could not understand audio")
-                    self.speak("Sorry, I couldn't understand that. Please try again.")
-                    return None
-                except sr.RequestError as e:
-                    print(f"Could not request results; {e}")
-                    self.speak("Sorry, there was an error with the speech recognition service.")
-                    return None
-                    
-            except sr.WaitTimeoutError:
-                print("Timeout waiting for phrase")
-                self.speak("Sorry, I didn't hear anything. Please try again.")
-                return None
                 
     def get_questions(self, category=None, difficulty=None):
-        # Start with questions from voice quizzes only
-        query = Question.objects.filter(quiz__quiz_type='voice')
-        
-        if category:
-            query = query.filter(quiz__subject=category)
-        if difficulty:
-            query = query.filter(difficulty=difficulty)
-        
-        questions = list(query.order_by('?')[:5])  # Get 5 random questions
-        
-        if questions:
-            self.current_quiz = questions[0].quiz
-        
-        return questions
+        try:
+            # Start with questions from voice quizzes only
+            query = Question.objects.filter(quiz__quiz_type='voice')
+            
+            if category:
+                query = query.filter(quiz__subject=category)
+            if difficulty:
+                query = query.filter(difficulty=difficulty)
+            
+            questions = list(query.order_by('?')[:5])  # Get 5 random questions
+            
+            if not questions:
+                raise ValueError(f"No questions found for {category} - {difficulty}")
+            
+            print(f"Found {len(questions)} questions for {category} - {difficulty}")  # Debug print
+            
+            if questions:
+                self.current_quiz = questions[0].quiz
+            
+            return questions
+        except Exception as e:
+            print(f"Error in get_questions: {str(e)}")
+            raise
         
     def run_quiz(self, category=None, difficulty=None):
         self.speak(f"Welcome {self.user.username} to the Voice Quiz!")
@@ -75,6 +220,8 @@ class VoiceQuizSystem:
         
         # Store the quiz object for later use
         self.current_quiz = questions[0].quiz if questions else None
+        
+        self.quiz_manager.start_quiz(questions)
         
         for question in questions:
             # Read question and options
@@ -94,7 +241,21 @@ class VoiceQuizSystem:
             
             while not answer_received and attempts < max_attempts:
                 self.speak("Please speak your answer number")
-                user_answer = self.listen()
+                self.waiting_for_answer = True
+                self.quiz_manager.voice_quiz.reset()  # Reset voice recognition state
+                self.quiz_manager.voice_quiz.start_listening()
+                
+                # Wait for answer with timeout
+                wait_time = 0
+                while self.quiz_manager.voice_quiz.is_active() and wait_time < 10:
+                    time.sleep(0.1)
+                    wait_time += 0.1
+                    user_answer = self.quiz_manager.voice_quiz.get_current_answer()
+                    if user_answer:
+                        break
+                
+                user_answer = self.quiz_manager.voice_quiz.get_current_answer()
+                self.waiting_for_answer = False
                 
                 if user_answer:
                     # Enhanced answer mapping with more variations
@@ -117,39 +278,42 @@ class VoiceQuizSystem:
                         # Fourth/4/Four variations
                         'four': 4, 'for': 4, 'fourth': 4, 'number four': 4,
                         'option four': 4, 'option 4': 4, 'number 4': 4, 'answer four': 4,
-                        'answer 4': 4, '4': 4
+                        'answer 4': 4, '4': 4,
+                        # Additional variations for common misrecognitions
+                        'caption one': 1, 'caption 1': 1,
+                        'caption two': 2, 'caption 2': 2,
+                        'caption three': 3, 'caption 3': 3,
+                        'caption four': 4, 'caption 4': 4, 'caption for': 4
                     }
                     
                     # Clean up the answer and convert to lowercase
                     user_answer = user_answer.strip().lower()
-                    
-                    # Debug prints
-                    print(f"Recognized answer: {user_answer}")
-                    print(f"Correct answer from database: {question.correct_answer}")
-                    print(f"Type of correct answer: {type(question.correct_answer)}")
+                    print(f"Processing answer: {user_answer}")  # Debug print
                     
                     # Try to map the answer to a number
                     mapped_answer = answer_map.get(user_answer)
-                    print(f"Mapped to: {mapped_answer}")
-                    print(f"Type of mapped answer: {type(mapped_answer)}")
+                    print(f"Mapped to: {mapped_answer}")  # Debug print
                     
                     if mapped_answer is not None:
                         answer_received = True
-                        # Convert both to integers for comparison
+                        self.quiz_manager.voice_quiz.stop_listening()  # Stop listening after getting answer
+                        
                         if int(mapped_answer) == int(question.correct_answer):
-                            print("Comparison result: True")  # Debug print
                             self.speak("Correct answer!")
                             self.score += 1
                         else:
-                            print("Comparison result: False")  # Debug print
                             self.speak(f"Wrong answer! The correct answer was option {question.correct_answer}")
+                        time.sleep(1)  # Give time for the response before next question
                     else:
                         self.speak("Please say a number between 1 and 4")
                 
                 attempts += 1
+                if not answer_received:
+                    self.quiz_manager.voice_quiz.stop_listening()
                 
             if not answer_received:
                 self.speak("Moving to the next question")
+                time.sleep(1)
         
         self.end_quiz()
         
@@ -177,24 +341,6 @@ class VoiceQuizSystem:
         for result in top_scores:
             total = result.quiz.questions.count()  # Get the count directly
             self.speak(f"{result.user.username} scored {result.score} out of {total}")
-
-    def listen_for_answer(self):
-        with self.mic as source:
-            self.recognizer.adjust_for_ambient_noise(source)
-            print("Listening for your answer...")
-            try:
-                audio = self.recognizer.listen(source, timeout=5)
-                answer = self.recognizer.recognize_google(audio)
-                return answer.lower()
-            except sr.WaitTimeoutError:
-                return "No answer received"
-            except sr.UnknownValueError:
-                return "Could not understand audio"
-            except sr.RequestError:
-                return "Could not request results"
-
-    def check_answer(self, user_answer, correct_answer):
-        return user_answer.lower() == correct_answer.lower()
 
     def process_quiz_attempt(self, user, quiz, answers):
         score = sum(1 for a in answers if a['correct'])

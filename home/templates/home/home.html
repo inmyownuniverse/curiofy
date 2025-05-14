@@ -181,8 +181,7 @@
             <a href="{% url 'home:about' %}" data-translate="true">About Us</a>
             <a href="{% url 'home:explore' %}" data-translate="true">Explore</a>
             <a href="{% url 'home:community' %}" data-translate="true">Community</a>
-            <a href="#" onclick="checkLogin()" >Students</a>
-            
+            <!--<a href="{% url 'accounts:signup' %}" data-translate="true">Students</a>-->            
         
 
         </div>
@@ -242,9 +241,9 @@
         function checkLogin() {
             const isLoggedIn = localStorage.getItem("isLoggedIn");
             if (isLoggedIn === "true") {
-                window.location.href = "students.html";
+                window.location.href = "{% url 'accounts:student_dashboard' %}";
             } else {
-                window.location.href = "signin.html";
+                window.location.href = "{% url 'accounts:login' %}";
             }
         }
     </script>

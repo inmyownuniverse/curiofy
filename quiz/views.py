@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from .voice_quiz import VoiceQuizSystem
+from .voice_quiz import VoiceQuizSystem, QuizManager, VoiceQuiz
 from .models import Quiz, Question, QuizResult
 import json
 
@@ -24,13 +24,37 @@ def start_quiz(request):
     }
     
     if request.method == 'POST':
-        category = request.POST.get('category')
-        difficulty = request.POST.get('difficulty')
-        
-        quiz = VoiceQuizSystem(request.user)
-        quiz.run_quiz(category, difficulty)
-        
-        return JsonResponse({'status': 'success'})
+        try:
+            category = request.POST.get('category')
+            difficulty = request.POST.get('difficulty')
+            
+            # Debug prints
+            print(f"Starting quiz - Category: {category}, Difficulty: {difficulty}")
+            
+            # Check if questions exist before starting
+            questions_exist = Question.objects.filter(
+                quiz__quiz_type='voice',
+                quiz__subject=category,
+                difficulty=difficulty
+            ).exists()
+            
+            if not questions_exist:
+                return JsonResponse({
+                    'status': 'error',
+                    'message': 'No questions available for the selected category and difficulty'
+                })
+            
+            quiz = VoiceQuizSystem(request.user)
+            quiz.run_quiz(category, difficulty)
+            
+            return JsonResponse({'status': 'success'})
+            
+        except Exception as e:
+            print(f"Error in start_quiz view: {str(e)}")
+            return JsonResponse({
+                'status': 'error',
+                'message': str(e)
+            })
     
     return render(request, 'quiz/start_quiz.html', context)
 
@@ -144,5 +168,18 @@ def submit_quiz(request):
         })
     
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
+@login_required
+def start_voice_quiz(request):
+    quiz_manager = QuizManager()
+    # Start the quiz and voice recognition
+    questions = generate_quiz_questions('python', 5)
+    quiz_manager.start_quiz(questions)
+    quiz_manager.voice_quiz.start_listening()
+    
+    # Return first question
+    return JsonResponse({
+        'question': quiz_manager.next_question()
+    })
 
 # Create your views here.

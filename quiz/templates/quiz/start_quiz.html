@@ -212,47 +212,41 @@
     </div>
 
     <script>
-        document.getElementById('startQuiz').addEventListener('click', function() {
-            const form = document.getElementById('quizForm');
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const form = this;
             const progressDiv = document.getElementById('quizProgress');
+            const startButton = document.getElementById('startQuiz');
             const formData = new FormData(form);
             
-            function getCookie(name) {
-                let cookieValue = null;
-                if (document.cookie && document.cookie !== '') {
-                    const cookies = document.cookie.split(';');
-                    for (let i = 0; i < cookies.length; i++) {
-                        const cookie = cookies[i].trim();
-                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                            break;
-                        }
-                    }
-                }
-                return cookieValue;
-            }
-            const csrftoken = getCookie('csrftoken');
-
+            // Show progress and disable button
             progressDiv.style.display = 'block';
-            this.disabled = true;
-
+            startButton.disabled = true;
+            
             fetch('{% url "quiz:start_quiz" %}', {
                 method: 'POST',
                 body: formData,
                 headers: {
-                    'X-CSRFToken': csrftoken
+                    'X-CSRFToken': '{{ csrf_token }}'
                 }
             })
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
-                    window.location.href = '{% url "quiz:leaderboard" %}';
+                    // Quiz started successfully
+                    form.style.display = 'none';
+                } else {
+                    // Show error message
+                    alert(data.message || 'An error occurred during the quiz');
+                    startButton.disabled = false;
+                    progressDiv.style.display = 'none';
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('An error occurred during the quiz.');
-                this.disabled = false;
+                alert('An error occurred while starting the quiz');
+                startButton.disabled = false;
                 progressDiv.style.display = 'none';
             });
         });

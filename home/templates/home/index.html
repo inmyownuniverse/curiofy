@@ -118,10 +118,11 @@
         <a href="{% url 'home:about' %}">About Us</a>
         <a href="{% url 'home:explore' %}">Explore</a>
         <a href="{% url 'home:community' %}">Community</a>
-        <a href="{% url 'accounts:signup' %}">Students</a>
+        <!--<a href="{% url 'accounts:signup' %}">Students</a>-->
     </div>
     <a href="{% url 'accounts:login' %}" class="sign-in" aria-label="Sign in">Sign In / Sign Up</a>
 </header>
+
 
 <!-- Language Switcher -->
 <div class="language-switcher">
@@ -140,9 +141,9 @@
     function checkLogin() {
         const isLoggedIn = localStorage.getItem("isLoggedIn");
         if (isLoggedIn === "true") {
-            window.location.href = "students.html";
+            window.location.href = "{% url 'accounts:student_dashboard' %}";
         } else {
-            window.location.href = "signin.html";
+            window.location.href = "{% url 'accounts:login' %}";
         }
     }
 
